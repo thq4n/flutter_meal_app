@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/screens/categories_screen.dart';
+import 'package:meal_app/screens/catetory_meals_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,14 +12,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        accentColor: Colors.indigo,
+        primarySwatch: Colors.brown,
+        canvasColor: Color.fromRGBO(255, 254, 229, 1),
+        fontFamily: "Raleway",
+        textTheme: ThemeData.light().textTheme.copyWith(
+              bodyText2: TextStyle(
+                color: Color.fromRGBO(20, 51, 51, 1),
+              ),
+              bodyText1: TextStyle(
+                color: Color.fromRGBO(20, 51, 51, 1),
+              ),
+              headline6: TextStyle(
+                  fontSize: 24,
+                  fontFamily: "RobotoCondensed",
+                  fontWeight: FontWeight.bold),
+            ),
       ),
-      home: MyHomePage(),
+      // home: CategoriesScreen(),
+      initialRoute: "/",
+      routes: {
+        "/": (ctx) => CategoriesScreen(),
+        CatetogyMealsSreen.routeName: (ctx) => CatetogyMealsSreen(),
+      },
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -29,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(""),
+        title: Text(widget.title),
       ),
       body: Container(),
     );
