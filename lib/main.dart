@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/screens/categories_screen.dart';
 import 'package:meal_app/screens/catetory_meals_screen.dart';
+import 'package:meal_app/screens/meal_detail_screen.dart';
+
+import 'screens/tabs_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,9 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        accentColor: Colors.indigo,
+        accentColor: Colors.tealAccent,
         primarySwatch: Colors.brown,
         canvasColor: Color.fromRGBO(255, 254, 229, 1),
         fontFamily: "Raleway",
@@ -29,11 +33,11 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
       ),
-      // home: CategoriesScreen(),
       initialRoute: "/",
       routes: {
-        "/": (ctx) => CategoriesScreen(),
+        "/": (ctx) => TabScreen(),
         CatetogyMealsSreen.routeName: (ctx) => CatetogyMealsSreen(),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
       },
     );
   }
