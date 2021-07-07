@@ -3,6 +3,10 @@ import 'package:meal_app/models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
   static String routeName = "/meal-detail";
+  final Function favoriteHandler;
+  final List<Meal> favoritedMeals;
+
+  MealDetailScreen(this.favoriteHandler, this.favoritedMeals);
 
   Widget _buildSectionTitle(BuildContext ctx, String sectionName) {
     return Container(
@@ -16,9 +20,25 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool _isFavorited(Meal meal) {
+      if (favoritedMeals.length > 0 && favoritedMeals.contains(meal)) {
+        return true;
+      }
+      return false;
+    }
+
     final meal = ModalRoute.of(context)!.settings.arguments as Meal;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              favoriteHandler(meal);
+            },
+            icon: Icon(Icons.star),
+            color: _isFavorited(meal) ? Colors.yellow : Colors.black,
+          )
+        ],
         title: Text(meal.title),
       ),
       body: SingleChildScrollView(
@@ -71,21 +91,58 @@ class MealDetailScreen extends StatelessWidget {
                 ),
               ),
               _buildSectionTitle(context, "Steps"),
-              ...meal.steps.map((step) {
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Text("${meal.steps.indexOf(step) + 1}"),
+              ...meal.steps.map(
+                (step) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Text("${meal.steps.indexOf(step) + 1}"),
+                        ),
+                        title: Text(step),
                       ),
-                      title: Text(step),
-                    ),
-                    Divider(),
-                  ],
-                );
-              })
+                      Divider(),
+                    ],
+                  );
+                },
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * 0.3,
+                  vertical: 10,
+                ),
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(meal);
+                  },
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                ),
+              )
             ],
           ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).accentColor.withOpacity(0.5),
+        mini: true,
+        onPressed: () {
+          Navigator.of(context).popUntil(
+            (route) {
+              return route.isFirst;
+            },
+          );
+        },
+        child: Icon(
+          Icons.home,
+          color: Colors.black.withOpacity(0.5),
         ),
       ),
     );
